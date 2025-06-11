@@ -6,6 +6,7 @@ sequenceDiagram
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
     server-->>browser: HTTP 302
+    deactivate server
 
     Note right of browser: The browser is asked to redirect by performing a GET request
 
