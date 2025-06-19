@@ -1,5 +1,7 @@
 import { useState, useEffect} from 'react'
-import axios from 'axios'
+
+import personService from './services/persons'
+import Person from './components/Person'
 
 const Filter = ({value, onChange}) => {
   return (
@@ -25,15 +27,11 @@ const PersonForm = ({name, onNameChange, number, onNumberChange, onSubmit}) => {
   )
 }
 
-const Person = ({person}) => {
-  return <p>{person.name} {person.number}</p>
-}
-
-const Persons = ({persons}) => {
+const Persons = ({persons, deleteById}) => {
   return (
     <>
       {persons.map(person => 
-        <Person key={person.id} person={person} />
+        <Person key={person.id} person={person} onDelete={() => deleteById(person.id)}/>
       )}
     </>
   )
@@ -46,13 +44,13 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
-    })
+    console.log('effect')
+    personService
+      .getAll()
+      .then(obtainedPersons => {
+        console.log('promise fulfilled')
+        setPersons(obtainedPersons)
+      })
   }, [])
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
@@ -61,13 +59,43 @@ const App = () => {
     event.preventDefault()
 
     if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const person = { name: newName, number: newNumber }
+        const id = persons.find(person => person.name === newName).id
+        personService
+          .replace(id, person)
+          .then(returnedPerson => {
+            console.log(returnedPerson)
+            setPersons(persons.map(person => person.name === newName ? returnedPerson : person))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     }
-      else {
-      setNewName('')
-      setNewNumber('')
-      const person = { name: newName, number: newNumber, id: persons.length+1 }
-      setPersons(persons.concat(person))
+    else {
+      const person = { name: newName, number: newNumber }
+      personService
+        .create(person)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      
+    }
+  }
+
+  const deleteById = (id) => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+        .catch(() => {
+          alert(`${person.name} was already deleted`)
+        })
     }
   }
 
@@ -95,7 +123,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons persons={filteredPersons}/>
+      <Persons persons={filteredPersons} deleteById={deleteById}/>
     </div>
   )
 }
