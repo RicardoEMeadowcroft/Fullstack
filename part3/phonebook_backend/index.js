@@ -68,7 +68,7 @@ app.post('/api/persons', (request, response) => {
     Person.findOne({ name: body.name }).then(result => {
       if (result) {
         return response.status(400).json({
-          error: 'number missing'
+          error: 'person with name already exists'
         })
       }
       else {
