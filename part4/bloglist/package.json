@@ -1,0 +1,17 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "description": "Blog List",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ricardo Meadowcroft",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.6.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1"
+  }
+}
