@@ -78,12 +78,13 @@ const App = () => {
               setNotificationMessage(null)
             }, 3000)
           })
-          .catch(() => {
-            setNotificationMessage(`${person.name} was already deleted`)
+          .catch((error) => {
+            console.log(error.response.data.error)
+            setNotificationMessage(error.response.data.error)
             setIsError(true)
             setTimeout(() => {
               setNotificationMessage(null)
-            }, 3000)
+            }, 5000)
             setPersons(persons.filter(n => n.name !== newName))
           })
       }
@@ -102,12 +103,13 @@ const App = () => {
               setNotificationMessage(null)
             }, 3000)
         })
-        .catch(() => {
-          setNotificationMessage(`Invalid Format`)
+        .catch((error) => {
+          console.log(error.response.data.error)
+          setNotificationMessage(error.response.data.error)
           setIsError(true)
           setTimeout(() => {
             setNotificationMessage(null)
-          }, 3000)
+          }, 5000)
         })
       
     }
@@ -126,12 +128,13 @@ const App = () => {
             setNotificationMessage(null)
           }, 3000)
         })
-        .catch(() => {
-          setNotificationMessage(`${person.name} was already deleted`)
+        .catch((error) => {
+          console.log(error.response.data.error)
+          setNotificationMessage(error.response.data.error)
           setIsError(true)
           setTimeout(() => {
             setNotificationMessage(null)
-          }, 3000)
+          }, 5000)
           setPersons(persons.filter(n => n.id !== id))
         })
     }
