@@ -11,11 +11,13 @@
   "author": "Ricardo Meadowcroft",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-async-error": "^0.0.2",
     "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.16.1"
   },

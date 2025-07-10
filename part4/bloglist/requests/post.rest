@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzczIiLCJpZCI6IjY4NmYxZDQxNzY2MmQyY2U0Y2RlMWY3ZiIsImlhdCI6MTc1MjExMjQ2MSwiZXhwIjoxNzUyMTE2MDYxfQ.MT90VVoGSRQL5BuKRmIktlAhy3vh_TyAajm0L8SGXQw
 
 {
-    "title": "My Second Blogpost",
-    "author": "John Doe",
+    "title": "My 133th Blogpost",
+    "author": "John Smithos",
     "url": "http://example.com/myBlogpost2",
-    "likes": 2
-
+    "likes": 1
 }
