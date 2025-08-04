@@ -14,7 +14,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -23,6 +23,7 @@ const App = () => {
       const newUser = JSON.parse(loggedUserJSON)
       setUser(newUser)
       blogService.setToken(newUser.token)
+      console.log(newUser)
     }
     else {
       setUser(null)
@@ -36,10 +37,10 @@ const App = () => {
         username, password,
       })
       console.log(user)
-      
+
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
@@ -63,10 +64,10 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <LoginForm login = {login} />
-    </div>     
+    </div>
   )
 
-  const createBlog = async (blogObject) => { 
+  const createBlog = async (blogObject) => {
     if (!window.localStorage.getItem('loggedNoteappUser')) {
       notificationRef.current.setNotification('user already logged out', true)
       blogService.setToken(null)
@@ -75,14 +76,14 @@ const App = () => {
 
     try {
       const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat({...returnedBlog, 'user': user}))
+      setBlogs(blogs.concat({ ...returnedBlog, 'user': user }))
       notificationRef.current.setNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`, false)
     } catch (error) {
       notificationRef.current.setNotification('invalid blog or session', true)
     }
   }
 
-  const updateBlog = async (id,blogObject) => { 
+  const updateBlog = async (id,blogObject) => {
     if (!window.localStorage.getItem('loggedNoteappUser')) {
       notificationRef.current.setNotification('user already logged out', true)
       blogService.setToken(null)
@@ -91,8 +92,24 @@ const App = () => {
 
     try {
       const returnedBlog = await blogService.update(id, blogObject)
-      setBlogs(blogs.map(blog => blog.id === id ? {...returnedBlog, 'user': blog.user} : blog))
+      setBlogs(blogs.map(blog => blog.id === id ? { ...returnedBlog, 'user': blog.user } : blog))
       notificationRef.current.setNotification(`added like to ${returnedBlog.title}`, false)
+    } catch (error) {
+      notificationRef.current.setNotification('invalid blog or session', true)
+    }
+  }
+
+  const deleteBlog = async (id) => {
+    if (!window.localStorage.getItem('loggedNoteappUser')) {
+      notificationRef.current.setNotification('user already logged out', true)
+      blogService.setToken(null)
+      setUser(null)
+    }
+
+    try {
+      const returnedBlog = await blogService.remove(id)
+      setBlogs(blogs.filter((blog) => blog.id !== id))
+      notificationRef.current.setNotification('blog was deleted', false)
     } catch (error) {
       notificationRef.current.setNotification('invalid blog or session', true)
     }
@@ -103,7 +120,7 @@ const App = () => {
       <h2>blogs</h2>
 
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button> </p>
-      
+
       <h2>create new </h2>
 
       <Togglable buttonLabel='new blog'>
@@ -111,7 +128,7 @@ const App = () => {
       </Togglable>
 
       {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
       )}
     </div>
   )

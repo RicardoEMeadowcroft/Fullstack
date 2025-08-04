@@ -5,14 +5,14 @@ const Notification = forwardRef((props, refs) => {
   const [message, setMessage] = useState(null)
   const [isError, setIsError] = useState(false)
 
-  const styleClass = isError ? "error" : "notification"
-  
+  const styleClass = isError ? 'error' : 'notification'
+
   const setNotification = (message, isError) => {
-      setMessage(message)
-      setIsError(isError)
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+    setMessage(message)
+    setIsError(isError)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   useImperativeHandle(refs, () => {
@@ -31,5 +31,7 @@ const Notification = forwardRef((props, refs) => {
     </div>
   )
 })
+
+Notification.displayName = 'Notification'
 
 export default Notification
