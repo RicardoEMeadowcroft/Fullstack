@@ -38,7 +38,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author} <button onClick={toggleDisplayed}>{displayed ? 'hide' : 'view'}</button>
-      <div style={displayStyle}>
+      <div style={displayStyle} className='collapsible'>
         {blog.url} <br/>
         likes {blog.likes} <button onClick={handleLike}>like</button> <br/>
         {blog.user.name}
@@ -48,7 +48,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   )
 }
 
-Blog.PropTypes = {
+Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   updateBlog: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
