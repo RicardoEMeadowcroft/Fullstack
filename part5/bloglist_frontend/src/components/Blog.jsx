@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
+  //console.log(blog)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -26,7 +27,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
       url: blog.url,
       likes: blog.likes+1
     })
-    console.log('liked!')
+    //console.log('liked!')
   }
 
   const handleDelete = () => {
@@ -36,7 +37,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} data-testid='blog-element'>
       {blog.title} {blog.author} <button onClick={toggleDisplayed}>{displayed ? 'hide' : 'view'}</button>
       <div style={displayStyle} className='collapsible'>
         {blog.url} <br/>

@@ -9,6 +9,12 @@ blogRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
+blogRouter.get('/:id', async (request, response) => {
+  const blogs = await Blog.findById(request.params.id)
+    .find({}).populate('user', { username: 1, name: 1 })
+  response.json(blogs)
+})
+
 blogRouter.post('/', middleware.tokenExtractor, middleware.userExtractor, async (request, response) => {
   const body = request.body
 

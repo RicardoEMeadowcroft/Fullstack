@@ -23,7 +23,6 @@ const App = () => {
       const newUser = JSON.parse(loggedUserJSON)
       setUser(newUser)
       blogService.setToken(newUser.token)
-      console.log(newUser)
     }
     else {
       setUser(null)
@@ -36,7 +35,7 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      console.log(user)
+      //console.log(user)
 
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
@@ -78,6 +77,7 @@ const App = () => {
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat({ ...returnedBlog, 'user': user }))
       notificationRef.current.setNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`, false)
+      blogFormRef.current.toggleVisibility()
     } catch (error) {
       notificationRef.current.setNotification('invalid blog or session', true)
     }
@@ -114,6 +114,8 @@ const App = () => {
       notificationRef.current.setNotification('invalid blog or session', true)
     }
   }
+  
+  const blogFormRef = useRef()
 
   const blogPart = () => (
     <div>
@@ -123,7 +125,7 @@ const App = () => {
 
       <h2>create new </h2>
 
-      <Togglable buttonLabel='new blog'>
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm createBlog={createBlog}/>
       </Togglable>
 

@@ -5,7 +5,7 @@ const testBlog = require('./test_blogs')
 
 
 test('dummy returns one', () => {
-  console.log(testBlog.one)
+  (testBlog.one)
 
   const result = listHelper.dummy(testBlog.zero)
   assert.strictEqual(result, 1)
