@@ -7,7 +7,7 @@ const notificationSlice = createSlice({
     visible: false
   },
   reducers: {
-    setNotification(state, action) {
+    addNotification(state, action) {
       console.log(current(state))
       state.visible = true
       state.text = action.payload
@@ -18,5 +18,15 @@ const notificationSlice = createSlice({
   }
 })
 
-export const { setNotification, removeNotification } = notificationSlice.actions
+export const { addNotification, removeNotification } = notificationSlice.actions
+
+export const setNotification = (text, timeout) => {
+  return async dispatch => {
+    dispatch(addNotification(text))
+    setTimeout(() => {
+      dispatch(removeNotification())
+    }, timeout*1000)
+  }
+}
+
 export default notificationSlice.reducer
