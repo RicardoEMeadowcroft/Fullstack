@@ -1,4 +1,7 @@
+import { useNotificationValue } from "../NotificationContext"
+
 const Notification = () => {
+  const { visible, text } = useNotificationValue()
   const style = {
     border: 'solid',
     padding: 10,
@@ -7,11 +10,11 @@ const Notification = () => {
   }
   
   // eslint-disable-next-line no-constant-condition
-  if (true) return null
+  if (!visible) return null
 
   return (
     <div style={style}>
-      
+      { text }
     </div>
   )
 }
